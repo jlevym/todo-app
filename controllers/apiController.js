@@ -84,16 +84,30 @@ module.exports = function(app) {
 
     });
 
+  app.delete('/api/todos/:todo_id', function(req, res) {
+        Todos.remove({
+            _id : req.params.todo_id
+        }, function(err, todo) {
+            if (err)
+                res.send(err);
 
+            // get and return all the todos after you create another
+            Todos.find(function(err, todos) {
+                if (err)
+                    res.send(err)
+                res.json(todos);
+            });
+        });
+    });
 
 
     // delete a todo
-    app.delete('/api/todo', function(req, res) {
+    /*app.delete('/api/todo', function(req, res) {
         Todos.findByIdAndRemove(req.body.id, function(err) {
             if (err) throw err;
             res.send('the todo was removed');
         })
-    });    
+    });*/    
 }
 
   
