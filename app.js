@@ -5,6 +5,8 @@ var config = require('./config');
 var setupController = require('./controllers/setupController');
 var apiController   = require('./controllers/apiController');
 
+var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var config = require('./config'); // get our config file
 
 
 
@@ -20,6 +22,7 @@ app.get('/', function(req, res) {
 // connect to mongodb using mongoose
 
 mongoose.connect(config.getDbConnectionString());
+app.set('superSecret', config.secret); // secret variable
 setupController(app); // the function to generate seed data if app/setupTodos
 apiController(app);   // the function containing the api endpoints for add, delete, get
 
@@ -29,3 +32,4 @@ app.get('*', function(req, res) {
 
 app.listen(port);
 console.log('listening on port: ' + port);
+console.log('hello, the api is at http://localhost: ' + port + '/api' );
